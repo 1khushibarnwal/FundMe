@@ -13,7 +13,7 @@ contract FundFundMe is Script {
         vm.startBroadcast();
         FundMe(payable(mostRecentlyDeployed)).fund{value: SEND_VALUE}();
         vm.stopBroadcast();
-        //console2.log(SEND_VALUE); // now works!
+        //console2.log(SEND_VALUE);
     }
 
     function run() external {
@@ -33,7 +33,7 @@ contract WithdrawFundMe is Script {
         FundMe(payable(mostRecentlyDeployed)).withdraw();
         vm.stopBroadcast();
 
-        //console2.log(SEND_VALUE); // now works!
+        //console2.log(SEND_VALUE);
     }
 
     function run() external {
