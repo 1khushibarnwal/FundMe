@@ -11,8 +11,8 @@ This is a minimal project allowing users to fund the contract owner with donatio
 ## Quick Start
 
 ```bash
-git clone https://github.com/1khushibarnwal/FundMe \
-cd FundMe \
+git clone https://github.com/1khushibarnwal/FundMe 
+cd FundMe 
 make
 ```
 
