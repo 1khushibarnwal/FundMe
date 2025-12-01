@@ -6,6 +6,8 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interf
 // Why is this a library and not abstract?
 // Why not an interface?
 library PriceConverter {
+    error PriceConverter__InvalidPriceFeedResponse();
+
     // We could make this public, but then we'd have to deploy it
     function getPrice(
         AggregatorV3Interface priceFeed
@@ -15,7 +17,10 @@ library PriceConverter {
 
         (, int256 answer, , , ) = priceFeed.latestRoundData();
         // ETH/USD rate in 18 digit
-        require(answer > 0, "Invalid price feed response");
+        //require(answer > 0, "Invalid price feed response");
+        if (answer <= 0) {
+            revert PriceConverter__InvalidPriceFeedResponse();
+        }
         return uint256(answer) * 10000000000;
     }
 
