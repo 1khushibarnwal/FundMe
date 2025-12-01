@@ -25,7 +25,7 @@ forge script script/DeployFundMe.s.sol
 
 # Deployment to a testnet or mainnet
 1. Setup environment variables
-You'll want to set your SEPOLIA_RPC_URL and PRIVATE_KEY as environment variables. You can add them to a .env file, similar to what you see in.
+You'll want to set your SEPOLIA_RPC_URL and PRIVATE_KEY as environment variables. You can add them to a .env file.
 
 * PRIVATE_KEY: The private key of your account (like from [metamask](https://metamask.io/)).
 
@@ -38,10 +38,10 @@ You can [learn how to export it here](https://metamask.zendesk.com/auth/v2/login
 
 Optionally, add your ETHERSCAN_API_KEY if you want to verify your contract on [Etherscan](https://etherscan.io/).
 
-2. Get testnet ETH
+1. Get testnet ETH
 Head over to [faucets.chain.link](https://faucets.chain.link/) and get some testnet ETH. You should see the ETH show up in your metamask.
 
-3. Deploy
+1. Deploy
 ```
 forge script script/DeployFundMe.s.sol --rpc-url $SEPOLIA_RPC_URL --private-key $PRIVATE_KEY --broadcast --verify --etherscan-api-key $ETHERSCAN_API_KEY
 ```
