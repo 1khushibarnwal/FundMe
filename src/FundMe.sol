@@ -5,6 +5,9 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interf
 import {PriceConverter} from "./PriceConverter.sol";
 
 error FundMe__NotOwner();
+error FundMe__NotEnoughETHSent();
+error FundMe__CheaperWithdrawFailed();
+error FundMe__WithdrawFailed();
 
 contract FundMe {
     using PriceConverter for uint256;
@@ -13,20 +16,23 @@ contract FundMe {
     address[] private sFunders;
 
     // Could we make this constant?  /* hint: no! We should make it immutable! */
-    address private immutable iOwner;
+    address private immutable I_OWNER;
     uint256 public constant MINIMUM_USD = 5 * 10 ** 18;
     AggregatorV3Interface private sPriceFeed;
 
     constructor(address priceFeed) {
-        iOwner = msg.sender;
+        I_OWNER = msg.sender;
         sPriceFeed = AggregatorV3Interface(priceFeed);
     }
 
     function fund() public payable {
-        require(
-            msg.value.getConversionRate(sPriceFeed) >= MINIMUM_USD,
-            "You need to spend more ETH!"
-        );
+        // require(
+        //     msg.value.getConversionRate(sPriceFeed) >= MINIMUM_USD,
+        //     "You need to spend more ETH!"
+        // );
+        if (msg.value.getConversionRate(sPriceFeed) < MINIMUM_USD) {
+            revert FundMe__NotEnoughETHSent();
+        }
         // require(PriceConverter.getConversionRate(msg.value) >= MINIMUM_USD, "You need to spend more ETH!");
         sAddressToAmountFunded[msg.sender] += msg.value;
         sFunders.push(msg.sender);
@@ -43,7 +49,7 @@ contract FundMe {
     }
 
     function _onlyOwner() internal view {
-        if (msg.sender != iOwner) revert FundMe__NotOwner();
+        if (msg.sender != I_OWNER) revert FundMe__NotOwner();
     }
 
     function cheaperWithdraw() public onlyOwner {
@@ -60,7 +66,10 @@ contract FundMe {
         (bool callSuccess, ) = payable(msg.sender).call{
             value: address(this).balance
         }("");
-        require(callSuccess, "Call failed");
+        //require(callSuccess, "Call failed");
+        if (!callSuccess) {
+            revert FundMe__CheaperWithdrawFailed();
+        }
     }
 
     function withdraw() public onlyOwner {
@@ -84,7 +93,10 @@ contract FundMe {
         (bool callSuccess, ) = payable(msg.sender).call{
             value: address(this).balance
         }("");
-        require(callSuccess, "Call failed");
+        //require(callSuccess, "Call failed");
+        if (!callSuccess) {
+            revert FundMe__WithdrawFailed();
+        }
     }
 
     // Explainer from: https://solidity-by-example.org/fallback/
@@ -122,6 +134,6 @@ contract FundMe {
     }
 
     function getOwner() external view returns (address) {
-        return iOwner;
+        return I_OWNER;
     }
 }

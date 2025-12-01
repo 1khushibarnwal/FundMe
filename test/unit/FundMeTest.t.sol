@@ -2,16 +2,16 @@
 
 pragma solidity ^0.8.18;
 
-import {Test, console} from "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 import {FundMe} from "../../src/FundMe.sol";
 import {DeployFundMe} from "../../script/DeployFundMe.s.sol";
 
 contract FundMeTest is Test {
-    FundMe fundMe; // state variable to hold the FundMe contract instance
+    FundMe public fundMe; // state variable to hold the FundMe contract instance
 
-    address USER = makeAddr("user"); // this is a helper function to create a random address
-    uint256 constant SEND_VALUE = 0.1 ether; // 100000000000000000
-    uint256 constant STARTING_BALANCE = 10 ether;
+    address private user = makeAddr("user"); // this is a helper function to create a random address
+    uint256 private constant SEND_VALUE = 0.1 ether; // 100000000000000000
+    uint256 private constant STARTING_BALANCE = 10 ether;
 
     function setUp() external {
         // this function is called before each test is run
@@ -20,7 +20,7 @@ contract FundMeTest is Test {
         //fundMe = new FundMe(0x694AA1769357215DE4FAC081bf1f309aDC325306);
         DeployFundMe deployFundMe = new DeployFundMe();
         fundMe = deployFundMe.run();
-        vm.deal(USER, STARTING_BALANCE); // give USER some ETH
+        vm.deal(user, STARTING_BALANCE); // give USER some ETH
     }
 
     function testMinimumDollarIsFive() public view {
@@ -58,17 +58,17 @@ contract FundMeTest is Test {
     }
 
     function testFundUpdatesFundedDataStructure() public funded {
-        uint256 amountFunded = fundMe.getAddressToAmountFunded(USER); // get the amount funded by USER
+        uint256 amountFunded = fundMe.getAddressToAmountFunded(user); // get the amount funded by USER
         assertEq(amountFunded, SEND_VALUE); // check if the amount funded is correct
     }
 
     function testAddsFunderToArrayOfFunders() public funded {
         address funder = fundMe.getFunder(0); // get the first funder
-        assertEq(funder, USER); // check if the first funder is USER
+        assertEq(funder, user); // check if the first funder is USER
     }
 
     function testOnlyOwnerCanWithdraw() public funded {
-        vm.prank(USER); // the next tx will be sent by USER
+        vm.prank(user); // the next tx will be sent by USER
         vm.expectRevert(); // the next line should revert
         fundMe.withdraw(); // withdraw the funds
     }
@@ -160,7 +160,7 @@ contract FundMeTest is Test {
     /* MODIFIER */
 
     modifier funded() {
-        vm.prank(USER); // the next tx will be sent by USER
+        vm.prank(user); // the next tx will be sent by USER
         fundMe.fund{value: SEND_VALUE}(); // fund the contract with some ETH
         _;
     }
