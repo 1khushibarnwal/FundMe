@@ -93,6 +93,11 @@ Please make sure to update tests as appropriate.
 
 I am working on deploying it in the L2 ecosystem, any suggestion to it will be of a great help.
 Though I have a ZkSyncDevOps.t.sol file, but it doesn't solve this issue pretty well.
-# Thank you!
-If you appreciated this, feel free to follow me and suggest me changes that could help me improve!
 
+## Acknowledgements
+
+Special thanks to [Cyfrin](https://www.cyfrin.io/) for their Solidity and Foundry educational content and for providing the original FundMe tutorial that this project is based on.
+
+## License
+
+This project is intended for educational purposes.
