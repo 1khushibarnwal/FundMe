@@ -4,6 +4,14 @@
 
 This is a minimal project allowing users to fund the contract owner with donations. The smart contract accepts ETH as donations, denominated in USD. Donations have a minimal USD value, otherwise they are rejected. The value is priced using a Chainlink price feed, and the smart contract keeps track of doners in case they are to be rewarded in the future.
 
+## Note
+
+This project is based on the **FundMe project from the [Cyfrin](https://www.cyfrin.io/) Solidity & Foundry tutorial** and was built primarily for **learning and educational purposes**.
+
+The project was used to practice Solidity, Foundry, Chainlink price feeds, testing, deployment, and smart contract interactions. It is **not an original project**, and credit goes to Cyfrin for the original tutorial and project structure.
+
+Any modifications or experiments beyond the tutorial were made as part of my learning process.
+
 ## Requirements
 [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) \
 [foundry](https://getfoundry.sh/)
