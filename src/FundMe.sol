@@ -54,18 +54,12 @@ contract FundMe {
 
     function cheaperWithdraw() public onlyOwner {
         uint256 fundersLength = sFunders.length;
-        for (
-            uint256 funderIndex = 0;
-            funderIndex < fundersLength;
-            funderIndex++
-        ) {
+        for (uint256 funderIndex = 0; funderIndex < fundersLength; funderIndex++) {
             address funder = sFunders[funderIndex];
             sAddressToAmountFunded[funder] = 0;
         }
         sFunders = new address[](0);
-        (bool callSuccess, ) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
+        (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
         //require(callSuccess, "Call failed");
         if (!callSuccess) {
             revert FundMe__CheaperWithdrawFailed();
@@ -73,11 +67,7 @@ contract FundMe {
     }
 
     function withdraw() public onlyOwner {
-        for (
-            uint256 funderIndex = 0;
-            funderIndex < sFunders.length;
-            funderIndex++
-        ) {
+        for (uint256 funderIndex = 0; funderIndex < sFunders.length; funderIndex++) {
             address funder = sFunders[funderIndex];
             sAddressToAmountFunded[funder] = 0;
         }
@@ -90,9 +80,7 @@ contract FundMe {
         // require(sendSuccess, "Send failed");
 
         // call
-        (bool callSuccess, ) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
+        (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
         //require(callSuccess, "Call failed");
         if (!callSuccess) {
             revert FundMe__WithdrawFailed();
@@ -123,9 +111,7 @@ contract FundMe {
      * View / Pure functions (Getters)
      */
 
-    function getAddressToAmountFunded(
-        address fundingAddress
-    ) external view returns (uint256) {
+    function getAddressToAmountFunded(address fundingAddress) external view returns (uint256) {
         return sAddressToAmountFunded[fundingAddress];
     }
 
